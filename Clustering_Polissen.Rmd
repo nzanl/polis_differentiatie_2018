@@ -1,0 +1,907 @@
+---
+title: "Clustering 2016-2018 Polissen"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+initialize
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plyr)
+library(dendextend)
+library(Hmisc)
+library(cluster)
+library(randomForest)
+library(corrplot)
+library(data.table)
+library(knitr)
+library(Metrics)
+library(purrr)
+library(PerformanceAnalytics)
+library(gplots)
+library(reshape)
+library(ggdendro)
+library(clues)
+source("Code/Ownfunctions.R")
+```
+
+#prepare data
+
+read in the data and make an unique identifier. For an explanation of our variables and methods see the main report.
+
+```{r}
+polisDT <- read.csv2("Input/NZA_ACM_polisdata_OPENBAAR.csv") 
+polisDT$ID <- paste0(polisDT$concern,"#", sprintf("%03d", polisDT$polisnr),'_', polisDT$Naammodelovereenkomst,'@', polisDT$jaar)
+```
+
+Check how many healthplans have columns with NA's. We remove them.
+
+```{r}
+kable(polisDT %>%
+        filter(!complete.cases(.)) %>% 
+        select(uzovi, concern, verz, label))
+
+```
+
+Thus, we removed one healthplan of iptiQ, because it contained NA's.
+
+```{r}
+polisDT <- polisDT %>% 
+        filter(complete.cases(.))
+```
+
+#Data exploring
+For each variable we make a plot to explore the data.
+
+We start with a boxplot of the contracteergraad for ziekenhuizen, Fysiotherapeuten, Apotheken and ZBC's.
+
+```{r}
+ggplot(polisDT, aes(as.factor(jaar), CGZiekenhuis)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), CGFysio)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), CGApo)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), CGZbc)) + geom_boxplot() + xlab('Jaar')
+```
+
+Next, we show the boxplot of vergoedingspercentage (in ratio terms) for ziekenhuizen, Fysiotherapeuten, Apotheken and ZBC's.
+
+```{r}
+ggplot(polisDT, aes(as.factor(jaar), MSZ_verg)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), FYSIO_verg)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), APO_verg)) + geom_boxplot() + xlab('Jaar')
+ggplot(polisDT, aes(as.factor(jaar), GGZ_verg)) + geom_boxplot() + xlab('Jaar')
+```
+
+```{r}
+ggplot(polisDT, aes(soortpolis)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(Onlinedeclareren)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(Onlinedeclarerenverplicht)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(viaappdeclareren)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(X900)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(Internetformulier)) + geom_bar() + facet_grid(.~jaar)
+ggplot(polisDT, aes(Internetapotheek)) + geom_bar() + facet_grid(.~jaar)
+
+```
+
+For the analysis we standardize the continuous variables, such that for each continuous variable  the average is equal to 0 and the standard deviation is equal to 1.
+
+```{r}
+standardize <- function(x){
+  (x-mean(x, na.rm=T))/sd(x, na.rm=T)
+}
+
+polisDT <- polisDT %>%
+  mutate(msz_verg_std=standardize(MSZ_verg)) %>%
+  mutate(ggz_verg_std=standardize(GGZ_verg)) %>%
+  mutate(fysio_verg_std=standardize(FYSIO_verg)) %>%
+  mutate(apo_verg_std=standardize(APO_verg)) %>%
+  
+  mutate(ziekenhuis_cg_std=standardize(CGZiekenhuis)) %>%
+  mutate(fysio_cg_std=standardize(CGFysio)) %>%
+  mutate(apo_cg_std=standardize(CGApo)) %>%
+  mutate(zbc_cg_std=standardize(CGZbc)) 
+
+polisDT <- polisDT %>%
+  select(-MSZ_verg, -GGZ_verg, -FYSIO_verg, -APO_verg, -CGZiekenhuis, -CGFysio, -CGApo, -CGZbc)
+```
+
+#determine weights
+We have two version of the weights that we use to determine the Gower Distance Matrix.
+For the first version ("informed weights"), we use the weights based on a survey. For the second version, we base the weights on how much variance in the premium is explained by each variable. For the second version ("Anova weights"), we use a Random Forest and Anova analysis.
+
+```{r}
+#define column sets for analyses
+idvars <- c("uzovi", "concern" , "verz" , "polisnr", "jaar", "label", "Naammodelovereenkomst", "ID")
+charvars <- setdiff(names(polisDT), idvars)
+factorvars <- c("soortpolis", "Onlinedeclareren", "Onlinedeclarerenverplicht", "viaappdeclareren" ,"X900", "Internetformulier", "Internetapotheek") 
+
+polisDT16_prestep <- polisDT %>% filter(jaar==2016) %>%  select(charvars)
+polisDT17_prestep <- polisDT %>% filter(jaar==2017) %>%  select(charvars)
+polisDT18_prestep <- polisDT %>% filter(jaar==2018) %>%  select(charvars)
+
+set.seed(23123)
+rf16 <- randomForest(premie ~., data= polisDT16_prestep, importance=T, ntree=4000)
+set.seed(23123)
+rf17 <- randomForest(premie ~., data= polisDT17_prestep, importance=T, ntree=4000)
+set.seed(23123)
+rf18 <- randomForest(premie ~., data= polisDT18_prestep, importance=T, ntree=4000)
+
+rm(polisDT16_prestep, polisDT17_prestep, polisDT18_prestep)
+```
+
+The variance important plot for premuim (we use the 'mean decrease in accuracy').
+
+```{r}
+varImportance <-rbind(
+      cbind(getImportanceData(rf16, setdiff(charvars, "premie" )), model='2016'),
+      cbind(getImportanceData(rf17, setdiff(charvars, "premie")), model='2017'),
+      cbind(getImportanceData(rf18, setdiff(charvars, "premie" )), model='2018'))
+
+p <- ggplot(varImportance, aes(x=variable, weight=importance, fill=variable)) +
+	  geom_bar() + ggtitle("Variable Importance from Random Forest Fit") +
+	  xlab("Health plan Attribute") + ylab("Variable Importance (mean decrease in accuracy)") +
+	  scale_fill_discrete(name="Variable Name") +
+      facet_wrap(~model) + 
+      theme(axis.text.x=element_blank())
+
+ggsave(filename=paste0("Output/VARimpPlot.png"),p)
+
+p
+rm(rf16, rf17, rf18)
+```
+
+
+We exclude the variables with negative or zero importance in all the years.
+Create the different datasets containing different sets of variables. 
+One with the positive importance from the variance important plot and one with all variables.
+
+```{r}
+importanceVars2016 <- c(as.matrix(varImportance %>%  filter(importance>0 & model==2016) %>% select(variable)))
+importanceVars2017 <- c(as.matrix(varImportance %>%  filter(importance>0 & model==2017) %>% select(variable)))
+importanceVars2018 <- c(as.matrix(varImportance %>%  filter(importance>0 & model==2018) %>% select(variable)))
+importanceVars <-unique(c(importanceVars2016, importanceVars2017, importanceVars2018))
+
+rm(importanceVars2016, importanceVars2017, importanceVars2018)
+```
+
+
+Correlation between the quantitative variables. From the variables that highly correlate with each other we select one.
+
+```{r, warning=FALSE}
+corData16 <- getCorData(polisDT %>% filter(jaar==2016) %>% select(setdiff(importanceVars,factorvars)))
+corData17 <- getCorData(polisDT %>% filter(jaar==2017) %>% select(setdiff(importanceVars,factorvars)))
+corData18 <- getCorData(polisDT %>% filter(jaar==2018) %>% select(setdiff(importanceVars,factorvars)))
+
+
+corData <- rbind(cbind(corData16, model='2016'),
+                 cbind(corData17, model='2017'),
+                 cbind(corData18, model='2018'))
+
+# correlation Heatmap
+
+p <- ggplot(data = corData, aes(Var1, Var2, fill = value))+
+	 geom_tile(color = "white")+
+	 scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+	 midpoint = 0, limit = c(-1,1), space = "Lab", 
+	 name="Spearman\nCorrelation") +
+	 theme_minimal()+ 
+	 coord_fixed() + facet_wrap(~model) + 
+	 theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+	 size = 12, hjust = 1)) +
+	 labs(x="",y="", title='Correlation Plot')
+
+
+ggsave(filename=paste0("Output/CorrPlot.png"),p)
+p
+rm(corData16, corData17, corData18, corData, p, varImportance)
+```
+
+We observe that vergoedingen are highly  correlated with each other. In our analyses we choose for MSZ vergoeding and exclude the rest. we also exclude onlinedeclareren in 2018, because it is equal in 2018 for all healthplans.
+
+Now, anova to determine of much of the variance is explained by each factor (Type III results). See also http://www.statmethods.net/stats/anova.html.
+
+```{r}
+fit16 <- aov(premie ~  ., data=polisDT %>% 
+               filter(jaar==2016) %>%
+              select(importanceVars, premie) %>% 
+             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
+fit16 <- drop1(fit16, ~., test="F")
+
+fit17 <- aov(premie ~  ., data=polisDT %>% 
+               filter(jaar==2017) %>%
+              select(importanceVars, premie) %>% 
+             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
+fit17 <- drop1(fit17, ~., test="F")
+
+fit18 <- aov(premie ~  ., data=polisDT %>% 
+               filter(jaar==2018) %>%
+              select(importanceVars, premie) %>% 
+             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std, -Onlinedeclareren)) 
+fit18 <- drop1(fit18, ~., test="F")
+
+```
+
+Anova Output for the selected variables 2016
+
+```{r}
+fit16
+```
+
+Anova Output for the selected variables 2017
+
+```{r}
+fit17
+```
+
+
+Anova Output for the selected variables 2018
+
+```{r}
+fit18
+```
+
+We use "Sum of Sq" als weights.
+Get the weights for each model/data specification. 
+
+```{r}
+wAnova16_pre <-cbind(round(data.frame(fit16[2])),model=2016)
+wAnova17_pre <-cbind(round(data.frame(fit17[2])),model=2017)
+wAnova18_pre <-cbind(round(data.frame(fit18[2])),model=2018)
+
+wAnova16_pre$var <- rownames(wAnova16_pre)
+wAnova17_pre$var <- rownames(wAnova17_pre)
+wAnova18_pre$var <- rownames(wAnova18_pre)
+
+wAnova <- rbind(wAnova16_pre,wAnova17_pre,wAnova18_pre)
+row.names(wAnova) <- NULL
+wAnova <- wAnova[is.na(wAnova$Sum.of.Sq)==F, ]
+
+#realtive weights per year
+wAnova <- cast(melt(wAnova, 2:3), var~ variable+model, fill=0)
+wAnova$Weights_2016<- round(wAnova$Sum.of.Sq_2016/sum(wAnova$Sum.of.Sq_2016),2)
+wAnova$Weights_2017<- round(wAnova$Sum.of.Sq_2017/sum(wAnova$Sum.of.Sq_2017),2)
+wAnova$Weights_2018<- round(wAnova$Sum.of.Sq_2018/sum(wAnova$Sum.of.Sq_2018),2)
+
+rm(fit16, fit17, fit18, importanceVars, wAnova16_pre,wAnova17_pre, wAnova18_pre)
+```
+
+Calculate an average over the three years
+
+```{r}
+wAnova$Weights <- round((wAnova$Weights_2016 +wAnova$Weights_2017 + wAnova$Weights_2018)/3, 2)
+```
+
+
+#Gower distances
+
+Get the distance matrix for different weights specifications. Our above defined Anova weight and informed weight version.
+Now we calculate the gower distance matrix with Anova weigths.
+
+```{r}
+GowerAnova <-list()
+
+yrlist <-  c(2016,2017,2018)
+for (i in 1:3){
+
+  useVars <- wAnova$var
+  
+  polisChars <- as.data.frame(polisDT %>% filter(jaar==yrlist[i]))
+  
+  rownames(polisChars) <- polisChars$ID
+  polisChars <- polisChars %>% select(useVars)
+  
+  #get the weights from the anova estimations
+  weightsAnova <- wAnova[wAnova$var==useVars[1],"Weights"]
+  for (h in 2:nrow(wAnova)) {weightsAnova <- c(weightsAnova,wAnova[wAnova$var==useVars[h],"Weights"])}
+
+  #gower
+   gower_dist <- daisy(polisChars,metric = "gower", weights = weightsAnova)
+   GowerAnova[[i]] <- as.matrix(gower_dist)
+  saveRDS(gower_dist, paste0('Work/GowerClust',yrlist[i],'Anovawts.rds'))
+
+}
+          
+  #set main grower
+  res <- GowerAnova[[1]]
+  GowerDT.16.Anova <- round(as.matrix(res),4)
+  
+  res <- GowerAnova[[2]]
+  GowerDT.17.Anova <- round(as.matrix(res),4)
+  
+  res <- GowerAnova[[3]]
+  GowerDT.18.Anova <- round(as.matrix(res),4)
+  
+  #save
+  write.csv2(GowerDT.16.Anova,'Work/GowerClust2016Anovawts.csv',row.names=T)
+  write.csv2(GowerDT.17.Anova,'Work/GowerClust2017Anovawts.csv',row.names=T)
+  write.csv2(GowerDT.18.Anova,'Work/GowerClust2018Anovawts.csv',row.names=T)
+  
+rm(useVars, polisChars, weightsAnova, wAnova, res)
+
+```
+
+We also calculate the Gower Distance Matrix with informed weights based on a consumer survey.
+From the survey we have the following weights. We scale it so the sum is 1.
+
+```{r}
+surveyInformed <- 
+  data.frame(rbind(
+    c("soortpolis", 7.84),            
+    c("Onlinedeclareren", 2.2),         
+    c("Onlinedeclarerenverplicht", 2.2),  
+    c("viaappdeclareren", 2.2),          
+    c("X900", 2.2),                  
+    c("Internetformulier", 2.2),          
+    c("Internetapotheek",  2.2),          
+    c("msz_verg_std", 5.2),           
+    c("ggz_verg_std", 1.3),
+    c("fysio_verg_std", 0.5),
+    c("apo_verg_std", 1.1),
+    c("ziekenhuis_cg_std", 35.82),        
+    c("fysio_cg_std", 10.65),             
+    c("apo_cg_std", 22.63),               
+    c("zbc_cg_std", 1.49)
+   ))
+
+names(surveyInformed) <-c("var", "Weights")
+surveyInformed$Weights <- as.numeric(as.character(surveyInformed$Weights))/100
+
+round(sum(surveyInformed$Weights),2)==1 #total weight is equal to 1
+```
+
+Calculate the Gower Distance Matrix
+
+```{r}
+GowerInformed <-list()
+yrlist <-  c(2016,2017,2018)
+for (i in 1:3){
+  
+  useVars <- setdiff(charvars,c('premie'))
+  
+  polisChars <- as.data.frame(polisDT %>% filter(jaar==yrlist[i]))
+  rownames(polisChars) <- polisChars$ID
+  polisChars <- polisChars %>% select(useVars)
+  
+  #get the weights from the anova estimations
+  weightsInformed <- surveyInformed[surveyInformed$var==useVars[1],"Weights"]
+  for (h in 2:nrow(surveyInformed)) {weightsInformed <- c(weightsInformed,surveyInformed[surveyInformed$var==useVars[h],"Weights"])}
+
+  #gower
+   gower_dist <- daisy(polisChars,metric = "gower", weights = weightsInformed)
+   GowerInformed[[i]] <- as.matrix(gower_dist)
+  
+  saveRDS(gower_dist, paste0('Work/GowerClust',yrlist[i],'InformedWts.rds'))
+}
+
+#set main grower
+res <- GowerInformed[[1]]
+GowerDT.16.Informed <- round(as.matrix(res),4)
+
+res <- GowerInformed[[2]]
+GowerDT.17.Informed <- round(as.matrix(res),4)
+
+res <- GowerInformed[[3]]
+GowerDT.18.Informed <- round(as.matrix(res),4)
+
+#save
+write.csv2(GowerDT.16.Informed,'Work/GowerClust2016Informedwts.csv',row.names=T)
+write.csv2(GowerDT.17.Informed,'Work/GowerClust2017Informedwts.csv',row.names=T)
+write.csv2(GowerDT.18.Informed,'Work/GowerClust2018Informedwts.csv',row.names=T)
+rm(useVars, polisChars, weightsInformed, surveyInformed, res)
+
+```
+
+
+Melt the distance matrix and keep only upper triangle. 
+
+```{r}
+GowerMat1 <- MeltGowerMat(GowerDT.16.Anova)
+GowerMat2 <- MeltGowerMat(GowerDT.16.Informed)
+
+
+GowerMat <- rbind(cbind(MeltGowerMat(GowerDT.16.Anova),weightsType="2016 Anova wts"),
+                  cbind(MeltGowerMat(GowerDT.16.Informed),weightsType="2016 Informed wts"),
+                  cbind(MeltGowerMat(GowerDT.17.Anova),weightsType="2017 Anova wts"),
+                  cbind(MeltGowerMat(GowerDT.17.Informed),weightsType="2017 Informed wts"),
+                  cbind(MeltGowerMat(GowerDT.18.Anova),weightsType="2018 Anova wts"),
+                  cbind(MeltGowerMat(GowerDT.18.Informed),weightsType="2018 Informed wts"))
+
+
+saveRDS(GowerMat,'Work/GowerMat.rds')
+
+```
+
+
+plot distribution of gower distance per weigthing.
+
+```{r}
+GowerMat_c <- GowerMat %>% filter(Polisnr1!=Polisnr2)
+p <- ggplot(GowerMat_c,aes(value,..density.., group=weightsType))+ geom_histogram() + facet_wrap(~weightsType, ncol=2)
+ggsave(filename=paste0("Output/GowerDensityPlot.png"), p)
+p
+```
+
+# Hierarchical Clusters 
+Based on Anova weights and informed weigts.
+define our functions to run the hieriachal clustering over each distance matrix
+
+```{r}
+  GetMatrix <-function(gowerObject){
+  as.matrix(gowerObject)
+  }
+  
+  hierClusterObject <- function(DT, method="average"){
+  year <-gsub(".*\\@","",rownames(DT)[[1]])
+  rownames(DT) <- paste(gsub("_.*","",gsub(".*#","",rownames(DT))),gsub("#.*","",(gsub("_.*","",rownames(DT)))))
+  colnames(DT) <- paste(gsub("_.*","",gsub(".*#","",colnames(DT))),gsub("#.*","",(gsub("_.*","",colnames(DT)))))
+  dend <- hclust(as.dist(DT), method)
+  list(dend,year) 
+  }
+ 
+plotDendogram <- function(dend, cutline1= 0.1, cutline2=0.05, extraname=""){
+  dendplot <- dend[[1]] %>% as.dendrogram %>%
+     dendextend::set("branches_k_color", k=7) %>%
+    dendextend::set("leaves_col", c("blue", "red"))
+  png(filename=paste0("Output/hcluster",extraname, dend[[2]], ".png"),width = 2*480, height = 2*480)
+  dendplot %>% plot(horiz=F, main=paste(extraname,dend[[2]], sep=" ") ); abline(h = cutline1, lwd = 2, lty = 2, col = "blue"); abline(h = cutline2, lwd = 2, lty = 2, col = "green") 
+  dev.off()
+  dendplot %>% plot(horiz=F, main=paste(extraname,dend[[2]], sep=" ") ); abline(h = cutline1, lwd = 2, lty = 2, col = "blue"); abline(h = cutline2, lwd = 2, lty = 2, col = "green")  
+}
+
+
+HierCluster <- function(dend, cutoff=0.10, extraname=""){
+  HierClust <- data.frame(cutree(dend[[1]],h=cutoff))
+  names(HierClust) <- paste0("clusterHierachical",dend[[2]],extraname,round(100*cutoff))
+  HierClust <- HierClust %>% mutate(polisnr=as.numeric(as.character(substr(rownames(HierClust),1,3))))
+  list(HierClust)
+}
+
+```
+
+
+#Run the hierachical clustering for the informed weights
+We draw a line in the tree at 0.1 an 0.05.
+
+```{r}
+  InputInformed <-lapply(GowerInformed, GetMatrix)
+ClustersInformed <-lapply(InputInformed, hierClusterObject)
+lapply(ClustersInformed, plotDendogram,cutline1= 0.1,cutline2=0.05, "Informed")
+
+cutofflist <-c(0, 0.05, 0.08, 0.1, 0.12)
+resultHierClusterInformed <- vector("list",length(cutofflist))
+for (i in 1:length(cutofflist)){
+ resultHierClusterInformed[i] <- list(lapply(ClustersInformed, HierCluster,cutofflist[i], "Informed"))
+}
+```
+
+#Run the hierachical clustering for the Anova weights
+We draw a line in the tree at 0.1 an 0.05.
+
+```{r}
+InputAnova <-lapply(GowerAnova, GetMatrix)
+ClustersAnova <-lapply(InputAnova, hierClusterObject)
+lapply(ClustersAnova, plotDendogram,cutline1=0.1,cutline2=0.05, "Anova")
+
+cutofflist <-c(0, 0.05, 0.08, 0.1, 0.12)
+resultHierClusterAnova <- vector("list",length(cutofflist))
+for (i in 1:length(cutofflist)){
+ resultHierClusterAnova[i] <- list(lapply(ClustersAnova, HierCluster,cutofflist[i], "Anova"))
+}
+```
+
+For the informed Gower distance we also calculate hierachical clustering with complete link
+
+```{r}
+ClusterInformedComplete<-lapply(InputInformed, hierClusterObject, method="complete")
+lapply(ClusterInformedComplete, plotDendogram, cutline1=0.1,cutline2=0.05, "InformedComplete")
+resultHierClusterInformedComplete <- lapply(ClusterInformedComplete, HierCluster,0.05, "InformedComplete")
+```
+
+#PAM clustering Anova Weights
+
+We use  "Partitioning (clustering) of the data into k clusters "around medoids""  It is a more robust version of K-means.
+Make plot of Silhouette Width Anova 2016
+
+```{r}
+Plotgower(GowerAnova[[1]])
+```
+
+Make plot of Silhouette Width Anova 2017
+
+```{r}
+Plotgower(GowerAnova[[2]])
+```
+
+Make plot of Silhouette Width Anova 2018
+
+```{r}
+Plotgower(GowerAnova[[3]])
+```
+
+Based on this plot we choose 3 clusters for anova 2016
+
+```{r}
+pam_fit <- 3 %>% map(pam,x=GowerAnova[[1]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterAnova16 <- data.table(merge(polisDT %>% filter(jaar==2016), cl, by='polisnr', all=F))
+```
+
+Based on this plot we choose 2 clusters for anova 2017
+
+```{r}
+pam_fit <- 2 %>% map(pam,x=GowerAnova[[2]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterAnova17 <- data.table(merge(polisDT %>% filter(jaar==2017), cl, by='polisnr', all=F))
+```
+
+Based on this plot we choose 5 clusters for anova 2017
+
+```{r}
+pam_fit <- 5 %>% map(pam,x=GowerAnova[[3]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterAnova18 <- data.table(merge(polisDT %>% filter(jaar==2018), cl, by='polisnr', all=F))
+```
+
+#PAM clustering Informed Weights
+We use  "Partitioning (clustering) of the data into k clusters "around medoids""  It is a more robust version of K-means.
+Make plot of Silhouette Width Informed 2016
+
+```{r}
+Plotgower(GowerInformed[[1]])
+```
+
+Make plot of Silhouette Width Informed 2017
+
+```{r}
+Plotgower(GowerInformed[[2]])
+```
+
+Make plot of Silhouette Width Informed 2018
+
+```{r}
+Plotgower(GowerInformed[[3]])
+```
+
+Based on this plot we choose 3 clusters for Informed 2016
+
+```{r}
+pam_fit <- 3 %>% map(pam,x=GowerInformed[[1]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterInformed16 <- data.table(merge(polisDT %>% filter(jaar==2016), cl, by='polisnr', all=F))
+```
+
+Based on this plot we choose 3 clusters for Informed 2017
+
+```{r}
+pam_fit <- 3 %>% map(pam,x=GowerInformed[[2]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterInformed17 <- data.table(merge(polisDT %>% filter(jaar==2017), cl, by='polisnr', all=F))
+```
+
+Based on this plot we choose 4 clusters for Informed 2018
+
+```{r}
+pam_fit <- 4 %>% map(pam,x=GowerInformed[[3]], diss = TRUE)
+#Make anova PAM cluster data set pretty.
+cl <- data.frame(pam_fit[[1]]$clustering)
+cl$polisnr <- row.names(cl)
+names(cl)[1] <- 'cluster'
+cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+dt_clusterInformed18 <- data.table(merge(polisDT %>% filter(jaar==2018), cl, by='polisnr', all=F))
+```
+
+#Merge all clusters to the data
+Make a table with polis info and clusters.
+
+```{r}
+Finaldata2016 <- merge(polisDT %>% filter(jaar==2016), dt_clusterAnova16 %>% select(polisnr, clusterPamAnova=cluster), by='polisnr', all=F)
+Finaldata2016 <- merge(Finaldata2016, dt_clusterInformed16 %>% select(polisnr,clusterPamInformed=cluster), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterAnova[[2]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterAnova[[4]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformed[[1]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformed[[2]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformed[[3]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformed[[4]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformed[[5]][[1]]), by='polisnr', all=T)
+Finaldata2016 <- merge(Finaldata2016, as.data.frame(resultHierClusterInformedComplete[[1]]), by='polisnr', all=T)
+
+
+Finaldata2017 <- merge(polisDT %>% filter(jaar==2017), dt_clusterAnova17 %>% select(polisnr, clusterPamAnova=cluster), by='polisnr', all=F)
+Finaldata2017 <- merge(Finaldata2017, dt_clusterInformed17 %>% select(polisnr,clusterPamInformed=cluster), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterAnova[[2]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterAnova[[4]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformed[[1]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformed[[2]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformed[[3]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformed[[4]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformed[[5]][[2]]), by='polisnr', all=T)
+Finaldata2017 <- merge(Finaldata2017, as.data.frame(resultHierClusterInformedComplete[[2]]), by='polisnr', all=T)
+
+Finaldata2018 <- merge(polisDT %>% filter(jaar==2018), dt_clusterAnova18 %>% select(polisnr, clusterPamAnova=cluster), by='polisnr', all=F)
+Finaldata2018 <- merge(Finaldata2018, dt_clusterInformed18 %>% select(polisnr,clusterPamInformed=cluster), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterAnova[[2]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterAnova[[4]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformed[[1]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformed[[2]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformed[[3]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformed[[4]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformed[[5]][[3]]), by='polisnr', all=T)
+Finaldata2018 <- merge(Finaldata2018, as.data.frame(resultHierClusterInformedComplete[[3]]), by='polisnr', all=T)
+
+write.csv2(Finaldata2016, 'Output/Clusters2016.csv', row.names=T)
+write.csv2(Finaldata2017, 'Output/Clusters2017.csv', row.names=T)
+write.csv2(Finaldata2018, 'Output/Clusters2018.csv', row.names=T)
+
+```
+
+#plot the price variation for cluster Hierachical Informed with cutoff at 0.10
+For each cluster we plot for each healthplan its premium. In the plots below, each box corresponds to a cluster.
+##2016
+
+```{r}
+plotDT <- Finaldata2016 %>% mutate(clusterHierachical2016Informed10=as.factor(clusterHierachical2016Informed10)) %>%
+   mutate(clusterHierachical2016Informed10=as.factor(clusterHierachical2016Informed10))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed10)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2016Informed10) +
+  xlab("cluster")
+
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff10.png"),p)
+plot(p)
+```
+
+##2017
+
+```{r}
+plotDT <- Finaldata2017 %>% mutate(clusterHierachical2017Informed10=as.factor(clusterHierachical2017Informed10)) %>%
+   mutate(clusterHierachical2017Informed10=as.factor(clusterHierachical2017Informed10))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed10)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2017Informed10) +
+  xlab("cluster")
+
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff10.png"),p)
+plot(p)
+```
+
+##2018
+
+```{r}
+plotDT <- Finaldata2018 %>% mutate(clusterHierachical2018Informed10=as.factor(clusterHierachical2018Informed10)) %>%
+   mutate(clusterHierachical2018Informed10=as.factor(clusterHierachical2018Informed10))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed10)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2018Informed10) +
+  xlab("cluster")
+  
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2018_cutoff10.png"),p)
+
+plot(p)
+```
+
+#plot the price variation for cluster Hierachical Informed with cutoff at 0.05
+For each cluster we plot for each healthplan its premium. In the plots below, each box corresponds to a cluster.
+##2016
+
+```{r}
+plotDT <- Finaldata2016 %>% mutate(clusterHierachical2016Informed5=as.factor(clusterHierachical2016Informed5)) %>%
+   mutate(clusterHierachical2016Informed5=as.factor(clusterHierachical2016Informed5))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed5)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2016Informed5) +
+  xlab("cluster")
+
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff5.png"),p)
+plot(p)
+```
+
+##2017
+
+```{r}
+plotDT <- Finaldata2017 %>% mutate(clusterHierachical2017Informed5=as.factor(clusterHierachical2017Informed5)) %>%
+   mutate(clusterHierachical2017Informed5=as.factor(clusterHierachical2017Informed5))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed5)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2017Informed5) +
+  xlab("cluster")
+
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff5.png"),p)
+plot(p)
+```
+
+##2018
+
+```{r}
+plotDT <- Finaldata2018 %>% mutate(clusterHierachical2018Informed5=as.factor(clusterHierachical2018Informed5)) %>%
+   mutate(clusterHierachical2018Informed5=as.factor(clusterHierachical2018Informed5))
+
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed5)==F), aes(x="",y=premie)) + 
+  geom_point() + 
+  facet_grid(.~clusterHierachical2018Informed5) +
+  xlab("cluster")
+  
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2018_cutoff5.png"),p)
+
+plot(p)
+```
+
+#coeficient of variation per cluster for method Hierachical with Informed weights and a cutoff at 0.10.
+For each cluster, we calculate the coeficient of variation. The coefficient of variation is a method to measure price dispersion and it is the calculated as the ratio of the standard deviation to the mean. 
+
+We do this for method Hierachical with Informed weights and a cutoff at 0.10.
+
+For 2016 the CV of each cluster is 
+
+```{r}
+Finaldata2016 %>% 
+  group_by(clusterHierachical2016Informed10) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+
+For 2017 the CV of each cluster is
+
+```{r}
+Finaldata2017 %>% 
+  group_by(clusterHierachical2017Informed10) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+For 2018 the CV of each cluster is 
+
+```{r}
+Finaldata2018 %>% 
+  group_by(clusterHierachical2018Informed10) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+Note that when there is only one healthplan in a cluster, the standard deviation and, thus, the CV, are not available.
+
+#coeficient of variation per cluster for method Hierachical with Informed weights and a cutoff at 0.05.
+For each cluster, we calculate the coeficient of variation. The coefficient of variation is a method to measure price dispersion and it is the calculated as the ratio of the standard deviation to the mean.
+
+We do this for method Hierachical with Informed weights and a cutoff at 0.05.
+
+For 2016 the CV of each cluster is 
+
+```{r}
+Finaldata2016 %>% 
+  group_by(clusterHierachical2016Informed5) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+
+For 2017 the CV of each cluster is 
+
+```{r}
+Finaldata2017 %>% 
+  group_by(clusterHierachical2017Informed5) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+For 2018 the CV of each cluster is 
+
+```{r}
+Finaldata2018 %>% 
+  group_by(clusterHierachical2018Informed5) %>% 
+  dplyr::summarise(CV=round(sd(premie)/mean(premie), 2), n=n() )
+```
+
+Note that when there is only one healthplan in a cluster, the standard deviation and, thus, the CV, are not available.
+
+#Check overlap between the clusters from our different methods and weigths
+We use the de Adjusted Rand Index (ARI).
+
+Remove policies NA policies and set the seed.
+
+```{r}
+set.seed(12343)
+clusters <- Finaldata2018 %>% filter(is.na(clusterPamAnova)==F)
+```
+
+
+Compare different methods for informed and Anova weights
+```{r message=FALSE, warning=FALSE}
+differentMethods <- 
+  data.frame(
+   rbind(
+    cbind(paste('clusterHierachicalInformed5','clusterPamInformed', sep =  " vs. "), 
+      adjustedRand(clusters$clusterHierachical2018Informed5,   
+        clusters$clusterPamInformed)["HA"]),
+    cbind(paste('clusterHierachicalInformed5','clusterHierachicalInformedCompl5', sep = " vs. "), 
+      adjustedRand(clusters$clusterHierachical2018Informed5,   
+        clusters$clusterHierachical2018InformedComplete5)["HA"]),
+    cbind(paste('clusterHierachicalAnova5','clusterPamAnova', sep = " vs. "),
+      adjustedRand(clusters$clusterHierachical2018Anova5,   
+        clusters$clusterPamAnova)["HA"])
+  )
+ )
+names(differentMethods) <- c('comparison','AdjustedRandIndex')
+differentMethods <- differentMethods %>% mutate(AdjustedRandIndex=round(as.numeric(as.character(AdjustedRandIndex)), 2))
+kable(differentMethods)
+```
+
+
+Compare different weights per method.
+```{r message=FALSE, warning=FALSE}
+differentWeights <- 
+  data.frame(
+    rbind(
+     cbind(paste('clusterHierachical2018Informed5','clusterHierachical2018Anova5', sep =  " vs. "),
+        adjustedRand(clusters$clusterHierachical2018Informed5,   
+          clusters$clusterHierachical2018Anova5)["HA"]),
+     cbind(paste('clusterPamInformed','clusterPamAnova', sep = " vs. "),
+        adjustedRand(clusters$clusterPamInformed,   
+          clusters$clusterPamAnova)["HA"])
+  )
+ )
+names(differentWeights) <- c('comparison','AdjustedRandIndex')
+differentWeights <- differentWeights %>% mutate(AdjustedRandIndex=round(as.numeric(as.character(AdjustedRandIndex)), 2))
+kable(differentWeights)
+```
+
+
+Write ARI's to files.
+
+```{r message=FALSE, warning=FALSE}
+write.csv2(differentMethods, 'Output/differentMethodsARI.csv', row.names=F)
+write.csv2(differentWeights, 'Output/differentWeightsARI.csv', row.names=F)
+```
+
+
+
+# Disclaimer en Licenties
+
+![](input/cc_img/cc_zero_88x31.png)
+
+Op de ruwe en verrijkte brondata is de licentie [Creative Commons Zero (CC0 1.0 Universal)](https://creativecommons.org/publicdomain/zero/1.0/) van toepassing. 
+
+Dit betreft de bestanden:
+
+* NZA_ACM_polisdata_OPENBAAR.csv
+
+
+Dit betekent onder meer dat bij hergebruik van enkel de data naamsvermelding van de Nederlandse Zorgautoriteit (hierna NZa) niet verplicht is. 
+
+![](input/cc_img/cc_by_88x31.png)
+
+Op dit analysescript en bijbehorende broncode is de licentie [Creative Commons Naamsvermelding (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/) van toepassing.
+
+Als onderdeel van Creative Commons Naamsvermelding is het bij hergebruik verplicht te vermelden dat de broncode afkomstig is van de NZa (maar niet zodanig dat de indruk gewekt wordt dat de NZa instemt met uw werk of de inhoud van uw werk).
+
+De NZa geeft geen garanties op beschikbaarheid, actualiteit en continuïteit van zowel de data als de broncode. 
+De NZa is niet verantwoordelijk voor eventuele (financiële) gevolgen voor het indirecte en directe gebruik van de data of broncode. De NZa aanvaardt geen aansprakelijkheid voor gevolgen door onjuistheden in de data of broncode. Bij twijfel over de juistheid van de data of broncode adviseert de NZa u daarover met haar contact op te nemen.  Het realiseren van dienstverlening op basis van de aangeboden functionaliteit en het risico op bedrijfsschade als gevolg van calamiteiten of het stopzetten hiervan zijn voor rekening en risico van de gebruiker.
+
+# Sessieinfo
+
+```{r}
+sessionInfo()
+```
+
+
+
