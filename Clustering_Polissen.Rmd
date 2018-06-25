@@ -1,4 +1,4 @@
----
+﻿---
 title: "Clustering 2016-2018 Polissen"
 output:
   html_document: default
@@ -894,7 +894,7 @@ Op dit analysescript en bijbehorende broncode is de licentie [Creative Commons N
 
 Als onderdeel van Creative Commons Naamsvermelding is het bij hergebruik verplicht te vermelden dat de broncode afkomstig is van de NZa (maar niet zodanig dat de indruk gewekt wordt dat de NZa instemt met uw werk of de inhoud van uw werk).
 
-De NZa geeft geen garanties op beschikbaarheid, actualiteit en continuïteit van zowel de data als de broncode. 
+De NZa geeft geen garanties op beschikbaarheid, actualiteit en continuiteit van zowel de data als de broncode. 
 De NZa is niet verantwoordelijk voor eventuele (financiële) gevolgen voor het indirecte en directe gebruik van de data of broncode. De NZa aanvaardt geen aansprakelijkheid voor gevolgen door onjuistheden in de data of broncode. Bij twijfel over de juistheid van de data of broncode adviseert de NZa u daarover met haar contact op te nemen.  Het realiseren van dienstverlening op basis van de aangeboden functionaliteit en het risico op bedrijfsschade als gevolg van calamiteiten of het stopzetten hiervan zijn voor rekening en risico van de gebruiker.
 
 # Sessieinfo
