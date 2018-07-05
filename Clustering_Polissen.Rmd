@@ -5,9 +5,9 @@ output:
   html_notebook: default
 ---
 
-initialize
+#initialize
 
-Important: use R version 3.5.0 or higher.
+##Important: use R version 3.5.0 or higher.
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
