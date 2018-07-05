@@ -1,0 +1,175 @@
+"uzovi";"concern";"verz";"polisnr";"jaar";"label";"Naammodelovereenkomst";"premie";"soortpolis";"Onlinedeclareren";"Onlinedeclarerenverplicht";"viaappdeclareren";"X900";"Internetformulier";"Internetapotheek";"MSZ_verg";"GGZ_verg";"FYSIO_verg";"APO_verg";"CGApo";"CGFysio";"CGZbc";"CGZiekenhuis"
+"420";"VGZ";"N.V. VGZ CARES";10;"2016";"De Goudse";"De Goudse Zorg Polis Ruime Keuze (Natura)";1314;"Natura";"nee";"nee";"nee";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,71;0,46;1
+"420";"VGZ";"N.V. VGZ CARES";100;"2016";"Besured";"Cares Natura Selectief (Besured Ruime Keuze)";1215,48;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,71;0,46;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";102;"2016";"Hema";"Hema Zorgverzekering";1164;"Combinatie";"ja";"ja";"ja";"ja";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,72;0,53;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";103;"2016";"Menzis";"Menzis Basis Voordelig";1089;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,65;0,65;0,89;0,72;0,53;1
+"211";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";104;"2016";"FBTO";"FBTO Zorgverzekering Naturapolis";1131;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"211";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";105;"2016";"FBTO";"FBTO Zorgverzekering Restitutiepolis";1199,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";106;"2016";"ZorgDirect";"Salland ZorgDirect Basisverzekering";1355,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,88;0,7;0,52;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";107;"2016";"Univé";"Univé Zorg Select Polis";1079,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,72;0,71;0,46;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";108;"2016";"ZieZo";"ZieZo Basis";1161;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";109;"2016";"De Friesland";"De Friesland Zelf Bewust Polis";1101;"Combinatie";"ja";"ja";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,84;0,65;0,46;0,97
+"420";"VGZ";"N.V. VGZ CARES";11;"2016";"De Goudse";"De Goudse Zorg Polis Eigen Keuze (Restitutie)";1367,4;"Restitutie";"nee";"nee";"nee";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";110;"2016";"HollandZorg";"HollandZorg Basisverzekering";1319,4;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;1;0,75;0,88;1;0,52;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";14;"2016";"CZ";"CZ Zorg op maatpolis (Natura)";1259,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,71;0,6;0,99
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";15;"2016";"CZ";"CZ Zorgkeuzepolis (Restitutie)";1328,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"104";"CZ";"DELTA LLOYD ZORGVERZEKERING N.V.";19;"2016";"Delta Lloyd";"Delta Lloyd Zorgverzekering Restitutie";1290;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7029";"DSW-SH";"OWM DSW ZORGVERZEKERAAR U.A.";20;"2016";"DSW, inTwente";"DSW polisvoorwaarden";1185;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3313";"Achmea";"INTERPOLIS ZORGVERZEKERINGEN N.V.";27;"2016";"Interpolis";"Interpolis ZorgActief";1182;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"9015";"VGZ";"VGZ voor de Zorg N.V.";29;"2016";"IZZ";"IZZ Basisverzekering variant natura";1239,36;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";1;1;0,8;0,8;0,9;0,71;1;1
+"9015";"VGZ";"VGZ voor de Zorg N.V.";30;"2016";"IZZ";"IZZ Basisverzekering variant restitutie";1292,64;"Restitutie";"ja";"nee";"nee";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";31;"2016";"Menzis";"Menzis Basis";1284;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,72;0,53;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";32;"2016";"Menzis";"Menzis Basis Vrij";1317;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"201";"CZ";"OHRA ZIEKTEKOSTENVERZEKERINGEN N.V.";33;"2016";"Ohra";"OHRA Zorgverzekering restitutie";1264,44;"Restitutie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7053";"CZ";"OHRA ZORGVERZEKERINGEN N.V.";34;"2016";"Ohra";"OHRA Zorgverzekering restitutie";1264,44;"Restitutie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"3343";"ONVZ";"ONVZ ZIEKTEKOSTENVERZEKERAAR N.V.";39;"2016";"ONVZ, PNOzorg, VvAA";"ONVZ Vrije Keuze Basisverzekering";1279,8;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3314";"Achmea";"OZF ZORGVERZEKERINGEN N.V.";40;"2016";"OZF";"OZF Zorgpolis";1313,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";42;"2016";"Salland";"Salland Basisverzekering";1355,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,9;0,9;0,9;0,9;0,88;0,7;0,52;1
+"7037";"DSW-SH";"STAD HOLLAND ZORGVERZEKERAAR OWM U.A.";44;"2016";"Stad Holland";"Stad Holland polisvoorwaarden";1224;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"736";"VGZ";"N.V. ZORGVERZEKERAAR UMC";47;"2016";"UMC";"UMC Zorgverzekering";1186,8;"Restitutie";"ja";"nee";"nee";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3333";"Menzis";"ANDERZORG N.V.";5;"2016";"Anderzorg";"Anderzorg Basis";1116;"Natura";"ja";"nee";"ja";"ja";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,72;0,53;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";50;"2016";"Univé";"Univé Zorg Geregeld polis";1284;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,71;0,46;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";51;"2016";"Univé, ZEKUR (Gewoon ZEKUR Zorg Vrij)";"Univé Zorg Vrij polis";1344;"Restitutie";"ja";"nee";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";52;"2016";"Zorgzaam";"Univé Zorgzaam polis";1316,64;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,9;0,9;0,9;0,9;0,9;0,71;0,46;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";53;"2016";"VGZ";"VGZ Ruime Keuze";1295,4;"Natura";"ja";"nee";"ja";"ja";"nee";"nee";0,8;0,8;0,8;0,8;0,9;0,71;0,46;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";54;"2016";"VGZ";"VGZ Eigen Keuze";1367,4;"Restitutie";"ja";"nee";"ja";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";55;"2016";"Zilveren Kruis Achmea";"Zilveren Kruis Basis Zeker";1313,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";57;"2016";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Vrij Polis";1313,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";58;"2016";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Zeker Polis";1283,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,85;0,62;0,38;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";65;"2016";"ZEKUR";"Univé Gewoon ZEKUR Zorg";1032;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,72;0,71;0,46;0,23
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";66;"2016";"Zilveren Kruis Achmea";"Zilveren Kruis Basis Exclusief";1359;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";7;"2016";"Avéro";"Avéro Keuze Zorgplan";1359;"Restitutie";"ja";"nee";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";73;"2016";"CZdirect";"CZ Direct (Natura Direct)";1139,4;"Natura";"ja";"nee";"ja";"nee";"ja";"ja";0,65;0,65;0,65;0,65;0,92;0,71;0,6;0,99
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";74;"2016";"IZA";"IZA GezondSamenPolis Restitutie";1312,8;"Restitutie";"ja";"nee";"nee";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"104";"CZ";"DELTA LLOYD ZORGVERZEKERING N.V.";78;"2016";"Delta Lloyd";"Delta Lloyd Zorgverzekering Natura";1184,4;"Natura";"ja";"nee";"ja";"nee";"nee";"nee";0,75;0,75;0,75;0,75;0,92;0,71;0,6;0,99
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";79;"2016";"Kiemer";"Kiemer Basisverzekering";1151,4;"Restitutie";"ja";"ja";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7054";"Menzis";"AZIVO ZORGVERZEKERAAR N.V.";8;"2016";"Azivo";"Azivo Basispolis";1296;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,72;0,53;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";80;"2016";"De Friesland";"De Friesland Alles Verzorgd Polis";1278;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,84;0,65;0,46;0,97
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";81;"2016";"De Friesland";"De Friesland Vrije Keus Polis";1338;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";82;"2016";"Bewuzt";"VGZ Bewuzt Basis";1104;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";0,7;0,7;0,7;0,7;0,72;0,71;0,46;1
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";83;"2016";"Ditzo";"Ditzo Basisverzekering";1126,2;"Restitutie";"ja";"nee";"ja";"nee";"nee";"nee";1;0,9;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";84;"2016";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Gemak Polis";1180,8;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,85;0,62;0,38;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";85;"2016";"Zilveren Kruis Achmea";"Zilveren Kruis Basis Budget";1163,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;0,63
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";86;"2016";"IAK, Turien, Aevitae";"Avéro Zorgplan Selectief";1187,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;0,63
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";89;"2016";"Avéro";"Avéro Select Zorgplan";1313,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";91;"2016";"Pro Life";"Pro Life Principe polis";1313,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";92;"2016";"Pro Life";"Pro life Restitutie";1359;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";93;"2016";"Zilveren Kruis Achmea";"Zilveren Kruis GezondSamenPolis Restitutie";1359;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";94;"2016";"Zilveren Kruis Achmea";"Zilveren Kruis GezondSamenPolis Natura";1313,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,71;0,55;1
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";96;"2016";"Amersfoortse";"Amersfoortse Flexibel (restitutie)";1295,4;"Restitutie";"ja";"nee";"nee";"nee";"nee";"nee";1;0,9;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";97;"2016";"CZ";"CZ Zorgbewustpolis (Natura Select)";1215,6;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;0,92;0,71;0,6;0,99
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";98;"2016";"IZA";"IZA GezondSamenPolis Natura";1270,68;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";0,75;0,75;0,75;0,75;0,9;0,71;0,46;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";99;"2016";"VGZ";"VGZ Goede Keuze";1199,4;"Natura";"ja";"nee";"ja";"ja";"nee";"nee";0,75;0,75;0,75;0,75;0,9;0,71;0,46;1
+"420";"VGZ";"N.V. VGZ CARES";10;"2017";"De Goudse";"De Goudse Zorg Polis Ruime Keuze (Natura)";1355,4;"Natura";"nee";"nee";"nee";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"420";"VGZ";"N.V. VGZ CARES";100;"2017";"Besured";"Cares Natura Selectief (Besured Ruime Keuze)";1275,48;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";102;"2017";"Hema";"Hema Zorgverzekering";1296;"Combinatie";"ja";"ja";"ja";"ja";"ja";"nee";0,75;0,75;0,75;0,75;1;0,75;0,41;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";103;"2017";"Menzis";"Menzis Basis Voordelig";1236;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;1;0,75;0,41;1
+"211";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";104;"2017";"FBTO";"FBTO Zorg basisverzekering naturapolis";1242;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"211";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";105;"2017";"FBTO";"FBTO Zorg basisverzekering restitutiepolis";1302;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";106;"2017";"ZorgDirect";"ZorgDirect Basisverzekering";1379,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,91;0,76;0,51;0,99
+"101";"VGZ";"N.V. UNIVÉ ZORG";107;"2017";"Univé";"Univé Zorg Select Polis";1185;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,77;0,75;0,39;0,99
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";108;"2017";"ZieZo";"ZieZo Basis";1199,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";109;"2017";"De Friesland";"De Friesland Zelf Bewust Polis";1199,4;"Natura";"ja";"ja";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,86;0,69;0,54;1
+"420";"VGZ";"N.V. VGZ CARES";11;"2017";"De Goudse";"De Goudse Zorg Polis Eigen Keuze (Restitutie)";1427,4;"Restitutie";"nee";"nee";"nee";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";110;"2017";"HollandZorg";"HollandZorg Basisverzekering";1379,4;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,91;0,76;0,51;0,99
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";111;"2017";"ZieZo";"ZieZo Selectief";1127,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;0,6
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";14;"2017";"CZ";"CZ Zorg op maatpolis (Natura)";1354,2;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,94;0,73;0,42;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";15;"2017";"CZ";"CZ Zorgkeuzepolis (Restitutie)";1428,6;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"104";"CZ";"DELTA LLOYD ZORGVERZEKERING N.V.";19;"2017";"Delta Lloyd";"Delta Lloyd Zorgverzekering Restitutie";1389,96;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7029";"DSW-SH";"OWM DSW ZORGVERZEKERAAR U.A.";20;"2017";"DSW, inTwente";"DSW polisvoorwaarden";1296;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3313";"Achmea";"INTERPOLIS ZORGVERZEKERINGEN N.V.";27;"2017";"Interpolis";"Interpolis ZorgActief";1251;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"9015";"VGZ";"VGZ voor de Zorg N.V.";29;"2017";"IZZ";"IZZ Basisverzekering variant natura";1319,28;"Natura";"ja";"nee";"ja";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"9015";"VGZ";"VGZ voor de Zorg N.V.";30;"2017";"IZZ";"IZZ Basisverzekering variant restitutie";1359,36;"Restitutie";"ja";"nee";"ja";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";31;"2017";"Menzis";"Menzis Basis";1428;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;1;0,75;0,41;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";32;"2017";"Menzis";"Menzis Basis Vrij";1464;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"201";"CZ";"OHRA ZIEKTEKOSTENVERZEKERINGEN N.V.";33;"2017";"Ohra";"OHRA Zorgverzekering restitutie";1363,68;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7053";"CZ";"OHRA ZORGVERZEKERINGEN N.V.";34;"2017";"Ohra";"OHRA Zorgverzekering restitutie";1363,68;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3343";"ONVZ";"ONVZ ZIEKTEKOSTENVERZEKERAAR N.V.";39;"2017";"ONVZ, PNOzorg, VvAA zorgverzekering";"ONVZ Vrije Keuze Basisverzekering";1390,92;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3314";"Achmea";"OZF ZORGVERZEKERINGEN N.V.";40;"2017";"OZF";"OZF Zorgpolis";1409,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";42;"2017";"Salland";"Salland Basisverzekering";1355,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,9;0,9;0,9;0,9;0,91;0,76;0,51;0,99
+"7037";"DSW-SH";"STAD HOLLAND ZORGVERZEKERAAR OWM U.A.";44;"2017";"Stad Holland";"Stad Holland polisvoorwaarden";1344;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"736";"VGZ";"N.V. ZORGVERZEKERAAR UMC";47;"2017";"UMC";"UMC Zorgverzekering";1258,8;"Restitutie";"ja";"nee";"nee";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3333";"Menzis";"ANDERZORG N.V.";5;"2017";"Anderzorg";"Anderzorg Basis";1224;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;1;0,75;0,41;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";50;"2017";"Univé";"Univé Zorg Geregeld polis";1359;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"101";"VGZ";"N.V. UNIVÉ ZORG";51;"2017";"Univé";"Univé Zorg Vrij polis";1407;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";52;"2017";"Zorgzaam";"Univé Zorgzaam polis";1359,96;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,9;0,9;0,9;0,9;0,9;0,75;0,39;0,99
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";53;"2017";"VGZ";"VGZ Ruime Keuze";1355,4;"Natura";"ja";"nee";"ja";"ja";"nee";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";54;"2017";"VGZ";"VGZ Eigen Keuze";1427,4;"Restitutie";"ja";"nee";"ja";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";55;"2017";"Zilveren Kruis";"Zilveren Kruis Basis Zeker";1409,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";57;"2017";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Vrij Polis";1427,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";58;"2017";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Zeker Polis";1391,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,86;0,66;0,53;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";65;"2017";"ZEKUR";"Univé Gewoon ZEKUR Zorg";1104;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,77;0,75;0,39;0,37
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";66;"2017";"Zilveren Kruis";"Zilveren Kruis Basis Exclusief";1461;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";7;"2017";"Avéro";"Avéro ZorgPlan Restitutie";1461;"Restitutie";"ja";"nee";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";73;"2017";"CZdirect";"CZ Direct (Natura Direct)";1228,2;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;0,94;0,73;0,42;1
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";74;"2017";"IZA";"IZA Eigen Keuze";1371;"Restitutie";"ja";"nee";"ja";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";79;"2017";"Kiemer";"Kiemer Basisverzekering";1281;"Restitutie";"ja";"ja";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";80;"2017";"De Friesland";"De Friesland Alles Verzorgd Polis";1379,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,86;0,69;0,54;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";81;"2017";"De Friesland";"De Friesland Vrije Keus Polis";1446;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";82;"2017";"Bewuzt";"VGZ Bewuzt Basis";1189,8;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,77;0,75;0,39;0,99
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";83;"2017";"Ditzo";"Ditzo Basisverzekering";1211,4;"Combinatie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";84;"2017";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Gemak Polis";1255,2;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,86;0,66;0,53;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";85;"2017";"Zilveren Kruis";"Zilveren Kruis Basis Budget";1259,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;0,6
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";86;"2017";"Avéro";"Avéro ZorgPlan Selectief";1266;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;0,6
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";89;"2017";"Avéro";"Avéro ZorgPlan Natura";1406,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";91;"2017";"Pro Life";"Pro Life Principe Polis (natura)";1409,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,89;0,73;0,57;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";92;"2017";"Pro Life";"Pro Life Principe Polis Restitutie";1461;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";96;"2017";"Amersfoortse";"Amersfoortse Restitutie";1410;"Restitutie";"ja";"nee";"nee";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";97;"2017";"CZ";"CZ Zorgbewustpolis (Natura Select)";1306,8;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,94;0,73;0,42;1
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";98;"2017";"IZA";"IZA Ruime Keuze";1320;"Natura";"ja";"nee";"ja";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,9;0,75;0,39;0,99
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";99;"2017";"VGZ";"VGZ Goede Keuze";1259,4;"Natura";"ja";"nee";"ja";"ja";"nee";"nee";0,75;0,75;0,75;0,75;0,9;0,75;0,39;0,99
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";102;"2018";"Hema";"Hema Zorgverzekering";1296;"Combinatie";"ja";"ja";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,88;0,71;0,58;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";103;"2018";"Menzis";"Menzis Basis Voordelig";1236;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;0,88;0,71;0,58;1
+"3351";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";104;"2018";"FBTO";"FBTO Zorg basisverzekering naturapolis";1266;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"3351";"Achmea";"FBTO ZORGVERZEKERINGEN N.V.";105;"2018";"FBTO";"FBTO Zorg basisverzekering restitutiepolis";1319,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";106;"2018";"ZorgDirect";"ZorgDirect Basisverzekering";1362;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";107;"2018";"Univé";"Univé Zorg Select Polis";1211,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,91;0,73;0,49;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";108;"2018";"ZieZo";"ZieZo Basis";1230;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";109;"2018";"De Friesland";"De Friesland Zelf Bewust Polis";1247,4;"Natura";"ja";"ja";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,23;0,7;0,43;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";110;"2018";"HollandZorg";"HollandZorg Basisverzekering";1360,8;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,9;0,72;0,54;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";111;"2018";"ZieZo";"ZieZo Selectief";1163,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;0,6
+"3352";"iptiQ";"iptiQ Life S.A.";112;"2018";"Besured, National Academic, Promovendum";"Ruime Keuze";1379,4;"Natura";"ja";"nee";"nee";NA;"ja";"nee";0,8;0,8;0,8;0,8;0,97;0,87;NA;1
+"3313";"Achmea";"INTERPOLIS ZORGVERZEKERINGEN N.V.";113;"2018";"Interpolis";"Interpolis ZorgCompact";1259,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,92;0,76;0,62;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";14;"2018";"CZ";"CZ Zorg op maatpolis (Natura)";1395;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,93;0,71;0,4;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";15;"2018";"CZ";"CZ Zorgkeuzepolis (Restitutie)";1471,2;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"104";"CZ";"DELTA LLOYD ZORGVERZEKERING N.V.";19;"2018";"Delta Lloyd";"Delta Lloyd Zorgverzekering Restitutie";1434,96;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7029";"DSW-SH";"OWM DSW ZORGVERZEKERAAR U.A.";20;"2018";"DSW, inTwente";"DSW polisvoorwaarden";1290;"Combinatie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3313";"Achmea";"INTERPOLIS ZORGVERZEKERINGEN N.V.";27;"2018";"Interpolis";"Interpolis ZorgActief";1275;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"9015";"VGZ";"VGZ voor de Zorg N.V.";29;"2018";"IZZ";"IZZ Basisverzekering variant natura";1373,28;"Natura";"ja";"nee";"ja";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,91;0,73;0,49;1
+"9015";"VGZ";"VGZ voor de Zorg N.V.";30;"2018";"IZZ";"IZZ Basisverzekering variant restitutie";1433,28;"Restitutie";"ja";"nee";"ja";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";31;"2018";"Menzis";"Menzis Basis";1428;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,88;0,71;0,58;1
+"3332";"Menzis";"MENZIS ZORGVERZEKERAAR N.V.";32;"2018";"Menzis";"Menzis Basis Vrij";1464;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"201";"CZ";"OHRA ZIEKTEKOSTENVERZEKERINGEN N.V.";33;"2018";"Ohra";"OHRA Zorgverzekering restitutie";1408,08;"Restitutie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7053";"CZ";"OHRA ZORGVERZEKERINGEN N.V.";34;"2018";"Ohra";"OHRA Zorgverzekering restitutie";1408,08;"Restitutie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"3343";"ONVZ";"ONVZ ZIEKTEKOSTENVERZEKERAAR N.V.";39;"2018";"ONVZ, PNOzorg, VvAA zorgverzekering";"ONVZ Vrije Keuze Basisverzekering";1420,08;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";40;"2018";"OZF";"OZF Zorgpolis";1433,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"7032";"Eno";"ENO ZORGVERZEKERAAR N.V.";42;"2018";"Salland";"Salland Basisverzekering";1218;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,9;0,9;0,9;0,9;1;0,72;0,54;1
+"7037";"DSW-SH";"STAD HOLLAND ZORGVERZEKERAAR OWM U.A.";44;"2018";"Stad Holland";"Stad Holland polisvoorwaarden";1326;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"736";"VGZ";"N.V. ZORGVERZEKERAAR UMC";47;"2018";"UMC";"UMC Zorgverzekering";1318,08;"Restitutie";"ja";"nee";"ja";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3333";"Menzis";"ANDERZORG N.V.";5;"2018";"Anderzorg";"Anderzorg Basis";1224;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;0,88;0,71;0,58;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";50;"2018";"Univé";"Univé Zorg Geregeld polis";1398;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,91;0,73;0,49;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";51;"2018";"Univé, ZEKUR";"Univé Zorg Vrij polis";1455;"Restitutie";"ja";"nee";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";52;"2018";"Zorgzaam";"Univé Zorgzaam polis";1398,96;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,9;0,9;0,9;0,9;0,91;0,73;0,49;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";53;"2018";"VGZ";"VGZ Ruime Keuze";1394,4;"Natura";"ja";"nee";"ja";"ja";"nee";"nee";0,8;0,8;0,8;0,8;0,91;0,73;0,49;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";54;"2018";"VGZ";"VGZ Eigen Keuze";1466,4;"Restitutie";"ja";"nee";"ja";"ja";"nee";"nee";1;1;1;1;1;1;1;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";55;"2018";"Zilveren Kruis";"Zilveren Kruis Basis Zeker";1433,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";57;"2018";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Vrij Polis";1421,4;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";58;"2018";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Zeker Polis";1379,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,85;0,71;0,51;1
+"101";"VGZ";"N.V. UNIVÉ ZORG";65;"2018";"ZEKUR";"Univé Gewoon ZEKUR Zorg";1126,2;"Natura";"ja";"nee";"nee";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,91;0,73;0,49;0,38
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";66;"2018";"Zilveren Kruis";"Zilveren Kruis Basis Exclusief";1485;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";7;"2018";"Avéro";"Avéro ZorgPlan Restitutie";1485;"Restitutie";"ja";"nee";"nee";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";73;"2018";"CZdirect";"CZ Direct (Natura Direct)";1265,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,65;0,65;0,65;0,65;0,93;0,71;0,4;1
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";74;"2018";"IZA";"IZA Eigen Keuze";1422;"Restitutie";"ja";"nee";"ja";"ja";"ja";"nee";1;1;1;1;1;1;1;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";80;"2018";"De Friesland";"De Friesland Alles Verzorgd Polis";1403,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,8;0,8;0,8;0,8;0,23;0,7;0,43;1
+"7084";"Achmea";"DE FRIESLAND ZORGVERZEKERAAR N.V.";81;"2018";"De Friesland";"De Friesland Vrije Keus Polis";1467;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"7095";"VGZ";"VGZ ZORGVERZEKERAAR N.V.";82;"2018";"Bewuzt";"VGZ Bewuzt Basis";1216,2;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,91;0,73;0,49;1
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";83;"2018";"Ditzo";"Ditzo Basisverzekering";1235,4;"Combinatie";"ja";"nee";"ja";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7085";"Zorg&Zekerheid";"OWM ZORGVERZEKERAAR ZORG EN ZEKERHEID U.A.";84;"2018";"Zorg en Zekerheid";"Zorg en Zekerheid Zorg Gemak Polis";1247,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,85;0,71;0,51;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";85;"2018";"Zilveren Kruis";"Zilveren Kruis Basis Budget";1271,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;0,6
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";86;"2018";"Aevitae, IAK";"Avéro ZorgPlan Selectief";1295,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;0,6
+"3329";"Achmea";"AVÉRO ACHMEA ZORGVERZEKERINGEN N.V.";89;"2018";"Avéro";"Avéro ZorgPlan Natura";1433,4;"Natura";"ja";"nee";"nee";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";91;"2018";"Pro Life";"Pro Life Principe Polis (natura)";1433,4;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,75;0,75;0,75;0,75;0,92;0,76;0,62;1
+"3311";"Achmea";"ZILVEREN KRUIS ZORGVERZEKERINGEN N.V.";92;"2018";"Pro Life";"Pro Life Principe Polis Restitutie";1485;"Restitutie";"ja";"nee";"ja";"nee";"ja";"nee";1;1;1;1;1;1;1;1
+"403";"ASR";"ASR BASIS ZIEKTEKOSTENVERZEKERINGEN N.V.";96;"2018";"Amersfoortse";"Amersfoortse Restitutie";1506;"Restitutie";"ja";"nee";"nee";"nee";"nee";"nee";1;1;1;1;1;1;1;1
+"7119";"CZ";"OWM CZ GROEP ZORGVERZEKERAAR U.A.";97;"2018";"CZ";"CZ Zorgbewustpolis (Natura Select)";1345,8;"Natura";"ja";"nee";"ja";"nee";"ja";"nee";0,7;0,7;0,7;0,7;0,93;0,71;0,4;1
+"699";"VGZ";"IZA ZORGVERZEKERAAR N.V.";98;"2018";"IZA";"IZA Ruime Keuze";1371;"Natura";"ja";"nee";"ja";"ja";"ja";"nee";0,8;0,8;0,8;0,8;0,91;0,73;0,49;1

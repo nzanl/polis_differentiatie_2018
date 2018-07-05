@@ -12,11 +12,9 @@
 *.html
 *.db
 *.png
-*.csv
 *.pdf
 *.nb.html
 *.html
-*.txt
 *.xls
 *.xlsx
 *.zip
