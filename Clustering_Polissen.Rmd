@@ -6,6 +6,9 @@ output:
 ---
 
 initialize
+
+Important: use R version 3.5.0 or higher.
+
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(plyr)
@@ -16,12 +19,9 @@ library(randomForest)
 library(corrplot)
 library(data.table)
 library(knitr)
-library(Metrics)
 library(purrr)
-library(PerformanceAnalytics)
 library(gplots)
 library(reshape)
-library(ggdendro)
 library(clues)
 source("Code/Ownfunctions.R")
 ```
@@ -41,7 +41,6 @@ Check how many healthplans have columns with NA's. We remove them.
 kable(polisDT %>%
         filter(!complete.cases(.)) %>% 
         select(uzovi, concern, verz, label))
-
 ```
 
 Thus, we removed one healthplan of iptiQ, because it contained NA's.
@@ -63,7 +62,7 @@ ggplot(polisDT, aes(as.factor(jaar), CGApo)) + geom_boxplot() + xlab('Jaar')
 ggplot(polisDT, aes(as.factor(jaar), CGZbc)) + geom_boxplot() + xlab('Jaar')
 ```
 
-Next, we show the boxplot of vergoedingspercentage (in ratio terms) for ziekenhuizen, Fysiotherapeuten, Apotheken and ZBC's.
+Next, we show a boxplot of vergoedingspercentage (in ratio terms) for ziekenhuizen, Fysiotherapeuten, Apotheken and GGZ's.
 
 ```{r}
 ggplot(polisDT, aes(as.factor(jaar), MSZ_verg)) + geom_boxplot() + xlab('Jaar')
@@ -71,6 +70,7 @@ ggplot(polisDT, aes(as.factor(jaar), FYSIO_verg)) + geom_boxplot() + xlab('Jaar'
 ggplot(polisDT, aes(as.factor(jaar), APO_verg)) + geom_boxplot() + xlab('Jaar')
 ggplot(polisDT, aes(as.factor(jaar), GGZ_verg)) + geom_boxplot() + xlab('Jaar')
 ```
+Next, we show a barplot of each service variable.
 
 ```{r}
 ggplot(polisDT, aes(soortpolis)) + geom_bar() + facet_grid(.~jaar)
@@ -80,10 +80,9 @@ ggplot(polisDT, aes(viaappdeclareren)) + geom_bar() + facet_grid(.~jaar)
 ggplot(polisDT, aes(X900)) + geom_bar() + facet_grid(.~jaar)
 ggplot(polisDT, aes(Internetformulier)) + geom_bar() + facet_grid(.~jaar)
 ggplot(polisDT, aes(Internetapotheek)) + geom_bar() + facet_grid(.~jaar)
-
 ```
 
-For the analysis we standardize the continuous variables, such that for each continuous variable  the average is equal to 0 and the standard deviation is equal to 1.
+For the analysis we standardize the continuous variables, such that for each continuous variable the average is equal to 0 and the standard deviation is equal to 1.
 
 ```{r}
 standardize <- function(x){
@@ -107,7 +106,8 @@ polisDT <- polisDT %>%
 
 #determine weights
 We have two version of the weights that we use to determine the Gower Distance Matrix.
-For the first version ("informed weights"), we use the weights based on a survey. For the second version, we base the weights on how much variance in the premium is explained by each variable. For the second version ("Anova weights"), we use a Random Forest and Anova analysis.
+For the first version ("informed weights"), we use the weights based on a survey. For the second version, we base the weights on how much variance in the premium is explained by each variable. 
+For the second version ("Anova weights"), we use a Random Forest and Anova analysis.
 
 ```{r}
 #define column sets for analyses
@@ -128,7 +128,6 @@ rf18 <- randomForest(premie ~., data= polisDT18_prestep, importance=T, ntree=400
 
 rm(polisDT16_prestep, polisDT17_prestep, polisDT18_prestep)
 ```
-
 The variance important plot for premuim (we use the 'mean decrease in accuracy').
 
 ```{r}
@@ -149,11 +148,7 @@ ggsave(filename=paste0("Output/VARimpPlot.png"),p)
 p
 rm(rf16, rf17, rf18)
 ```
-
-
 We exclude the variables with negative or zero importance in all the years.
-Create the different datasets containing different sets of variables. 
-One with the positive importance from the variance important plot and one with all variables.
 
 ```{r}
 importanceVars2016 <- c(as.matrix(varImportance %>%  filter(importance>0 & model==2016) %>% select(variable)))
@@ -163,7 +158,6 @@ importanceVars <-unique(c(importanceVars2016, importanceVars2017, importanceVars
 
 rm(importanceVars2016, importanceVars2017, importanceVars2018)
 ```
-
 
 Correlation between the quantitative variables. From the variables that highly correlate with each other we select one.
 
@@ -196,27 +190,27 @@ p
 rm(corData16, corData17, corData18, corData, p, varImportance)
 ```
 
-We observe that vergoedingen are highly  correlated with each other. In our analyses we choose for MSZ vergoeding and exclude the rest. we also exclude onlinedeclareren in 2018, because it is equal in 2018 for all healthplans.
+We observe that vergoedingen are highly correlated with each other. In our analyses we choose for MSZ vergoeding and exclude the rest. we also exclude onlinedeclareren in 2018, because it is equal in 2018 for all healthplans.
 
 Now, anova to determine of much of the variance is explained by each factor (Type III results). See also http://www.statmethods.net/stats/anova.html.
 
 ```{r}
 fit16 <- aov(premie ~  ., data=polisDT %>% 
                filter(jaar==2016) %>%
-              select(importanceVars, premie) %>% 
-             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
+               select(importanceVars, premie) %>% 
+               select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
 fit16 <- drop1(fit16, ~., test="F")
 
 fit17 <- aov(premie ~  ., data=polisDT %>% 
                filter(jaar==2017) %>%
-              select(importanceVars, premie) %>% 
-             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
+               select(importanceVars, premie) %>% 
+               select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std))
 fit17 <- drop1(fit17, ~., test="F")
 
 fit18 <- aov(premie ~  ., data=polisDT %>% 
                filter(jaar==2018) %>%
-              select(importanceVars, premie) %>% 
-             select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std, -Onlinedeclareren)) 
+               select(importanceVars, premie) %>% 
+               select(-fysio_verg_std, -apo_verg_std, -ggz_verg_std, -Onlinedeclareren)) 
 fit18 <- drop1(fit18, ~., test="F")
 
 ```
@@ -233,7 +227,6 @@ Anova Output for the selected variables 2017
 fit17
 ```
 
-
 Anova Output for the selected variables 2018
 
 ```{r}
@@ -244,9 +237,9 @@ We use "Sum of Sq" als weights.
 Get the weights for each model/data specification. 
 
 ```{r}
-wAnova16_pre <-cbind(round(data.frame(fit16[2])),model=2016)
-wAnova17_pre <-cbind(round(data.frame(fit17[2])),model=2017)
-wAnova18_pre <-cbind(round(data.frame(fit18[2])),model=2018)
+wAnova16_pre <- cbind(round(data.frame(fit16[2])), model=2016)
+wAnova17_pre <- cbind(round(data.frame(fit17[2])), model=2017)
+wAnova18_pre <- cbind(round(data.frame(fit18[2])), model=2018)
 
 wAnova16_pre$var <- rownames(wAnova16_pre)
 wAnova17_pre$var <- rownames(wAnova17_pre)
@@ -257,18 +250,18 @@ row.names(wAnova) <- NULL
 wAnova <- wAnova[is.na(wAnova$Sum.of.Sq)==F, ]
 
 #realtive weights per year
-wAnova <- cast(melt(wAnova, 2:3), var~ variable+model, fill=0)
-wAnova$Weights_2016<- round(wAnova$Sum.of.Sq_2016/sum(wAnova$Sum.of.Sq_2016),2)
-wAnova$Weights_2017<- round(wAnova$Sum.of.Sq_2017/sum(wAnova$Sum.of.Sq_2017),2)
-wAnova$Weights_2018<- round(wAnova$Sum.of.Sq_2018/sum(wAnova$Sum.of.Sq_2018),2)
+wAnova <- cast(melt(wAnova, 2:3), var ~ variable + model, fill=0)
+wAnova$Weights_2016 <- round(wAnova$Sum.of.Sq_2016/sum(wAnova$Sum.of.Sq_2016), 2)
+wAnova$Weights_2017 <- round(wAnova$Sum.of.Sq_2017/sum(wAnova$Sum.of.Sq_2017), 2)
+wAnova$Weights_2018 <- round(wAnova$Sum.of.Sq_2018/sum(wAnova$Sum.of.Sq_2018), 2)
 
-rm(fit16, fit17, fit18, importanceVars, wAnova16_pre,wAnova17_pre, wAnova18_pre)
+rm(fit16, fit17, fit18, importanceVars, wAnova16_pre, wAnova17_pre, wAnova18_pre)
 ```
 
-Calculate an average over the three years
+Calculate the average over the three years
 
 ```{r}
-wAnova$Weights <- round((wAnova$Weights_2016 +wAnova$Weights_2017 + wAnova$Weights_2018)/3, 2)
+wAnova$Weights <- round((wAnova$Weights_2016 + wAnova$Weights_2017 + wAnova$Weights_2018)/3, 2)
 ```
 
 
@@ -280,7 +273,7 @@ Now we calculate the gower distance matrix with Anova weigths.
 ```{r}
 GowerAnova <-list()
 
-yrlist <-  c(2016,2017,2018)
+yrlist <-  c(2016, 2017, 2018)
 for (i in 1:3){
 
   useVars <- wAnova$var
@@ -291,13 +284,13 @@ for (i in 1:3){
   polisChars <- polisChars %>% select(useVars)
   
   #get the weights from the anova estimations
-  weightsAnova <- wAnova[wAnova$var==useVars[1],"Weights"]
-  for (h in 2:nrow(wAnova)) {weightsAnova <- c(weightsAnova,wAnova[wAnova$var==useVars[h],"Weights"])}
+  weightsAnova <- wAnova[wAnova$var==useVars[1], "Weights"]
+  for (h in 2:nrow(wAnova)) {weightsAnova <- c(weightsAnova, wAnova[wAnova$var==useVars[h], "Weights"])}
 
   #gower
    gower_dist <- daisy(polisChars,metric = "gower", weights = weightsAnova)
    GowerAnova[[i]] <- as.matrix(gower_dist)
-  saveRDS(gower_dist, paste0('Work/GowerClust',yrlist[i],'Anovawts.rds'))
+  saveRDS(gower_dist, paste0('Work/GowerClust', yrlist[i], 'Anovawts.rds'))
 
 }
           
@@ -312,9 +305,9 @@ for (i in 1:3){
   GowerDT.18.Anova <- round(as.matrix(res),4)
   
   #save
-  write.csv2(GowerDT.16.Anova,'Work/GowerClust2016Anovawts.csv',row.names=T)
-  write.csv2(GowerDT.17.Anova,'Work/GowerClust2017Anovawts.csv',row.names=T)
-  write.csv2(GowerDT.18.Anova,'Work/GowerClust2018Anovawts.csv',row.names=T)
+  write.csv2(GowerDT.16.Anova, 'Work/GowerClust2016Anovawts.csv',row.names=T)
+  write.csv2(GowerDT.17.Anova, 'Work/GowerClust2017Anovawts.csv',row.names=T)
+  write.csv2(GowerDT.18.Anova, 'Work/GowerClust2018Anovawts.csv',row.names=T)
   
 rm(useVars, polisChars, weightsAnova, wAnova, res)
 
@@ -346,7 +339,7 @@ surveyInformed <-
 names(surveyInformed) <-c("var", "Weights")
 surveyInformed$Weights <- as.numeric(as.character(surveyInformed$Weights))/100
 
-round(sum(surveyInformed$Weights),2)==1 #total weight is equal to 1
+round(sum(surveyInformed$Weights), 2)==1 #total weight is equal to 1
 ```
 
 Calculate the Gower Distance Matrix
@@ -388,16 +381,13 @@ write.csv2(GowerDT.16.Informed,'Work/GowerClust2016Informedwts.csv',row.names=T)
 write.csv2(GowerDT.17.Informed,'Work/GowerClust2017Informedwts.csv',row.names=T)
 write.csv2(GowerDT.18.Informed,'Work/GowerClust2018Informedwts.csv',row.names=T)
 rm(useVars, polisChars, weightsInformed, surveyInformed, res)
-
 ```
-
 
 Melt the distance matrix and keep only upper triangle. 
 
 ```{r}
 GowerMat1 <- MeltGowerMat(GowerDT.16.Anova)
 GowerMat2 <- MeltGowerMat(GowerDT.16.Informed)
-
 
 GowerMat <- rbind(cbind(MeltGowerMat(GowerDT.16.Anova),weightsType="2016 Anova wts"),
                   cbind(MeltGowerMat(GowerDT.16.Informed),weightsType="2016 Informed wts"),
@@ -407,10 +397,8 @@ GowerMat <- rbind(cbind(MeltGowerMat(GowerDT.16.Anova),weightsType="2016 Anova w
                   cbind(MeltGowerMat(GowerDT.18.Informed),weightsType="2018 Informed wts"))
 
 
-saveRDS(GowerMat,'Work/GowerMat.rds')
-
+saveRDS(GowerMat, 'Work/GowerMat.rds')
 ```
-
 
 plot distribution of gower distance per weigthing.
 
@@ -431,18 +419,18 @@ define our functions to run the hieriachal clustering over each distance matrix
   }
   
   hierClusterObject <- function(DT, method="average"){
-  year <-gsub(".*\\@","",rownames(DT)[[1]])
-  rownames(DT) <- paste(gsub("_.*","",gsub(".*#","",rownames(DT))),gsub("#.*","",(gsub("_.*","",rownames(DT)))))
-  colnames(DT) <- paste(gsub("_.*","",gsub(".*#","",colnames(DT))),gsub("#.*","",(gsub("_.*","",colnames(DT)))))
+  year <-gsub(".*\\@", "", rownames(DT)[[1]])
+  rownames(DT) <- paste(gsub("_.*", "",gsub(".*#", "", rownames(DT))), gsub("#.*", "", (gsub("_.*", "", rownames(DT)))))
+  colnames(DT) <- paste(gsub("_.*", "",gsub(".*#", "", colnames(DT))), gsub("#.*", "", (gsub("_.*", "", colnames(DT)))))
   dend <- hclust(as.dist(DT), method)
-  list(dend,year) 
+  list(dend, year) 
   }
  
 plotDendogram <- function(dend, cutline1= 0.1, cutline2=0.05, extraname=""){
   dendplot <- dend[[1]] %>% as.dendrogram %>%
      dendextend::set("branches_k_color", k=7) %>%
-    dendextend::set("leaves_col", c("blue", "red"))
-  png(filename=paste0("Output/hcluster",extraname, dend[[2]], ".png"),width = 2*480, height = 2*480)
+     dendextend::set("leaves_col", c("blue", "red"))
+  png(filename=paste0("Output/hcluster", extraname, dend[[2]], ".png"),width = 2*480, height = 2*480)
   dendplot %>% plot(horiz=F, main=paste(extraname,dend[[2]], sep=" ") ); abline(h = cutline1, lwd = 2, lty = 2, col = "blue"); abline(h = cutline2, lwd = 2, lty = 2, col = "green") 
   dev.off()
   dendplot %>% plot(horiz=F, main=paste(extraname,dend[[2]], sep=" ") ); abline(h = cutline1, lwd = 2, lty = 2, col = "blue"); abline(h = cutline2, lwd = 2, lty = 2, col = "green")  
@@ -450,37 +438,35 @@ plotDendogram <- function(dend, cutline1= 0.1, cutline2=0.05, extraname=""){
 
 
 HierCluster <- function(dend, cutoff=0.10, extraname=""){
-  HierClust <- data.frame(cutree(dend[[1]],h=cutoff))
-  names(HierClust) <- paste0("clusterHierachical",dend[[2]],extraname,round(100*cutoff))
-  HierClust <- HierClust %>% mutate(polisnr=as.numeric(as.character(substr(rownames(HierClust),1,3))))
+  HierClust <- data.frame(cutree(dend[[1]], h=cutoff))
+  names(HierClust) <- paste0("clusterHierachical", dend[[2]], extraname, round(100*cutoff))
+  HierClust <- HierClust %>% mutate(polisnr=as.numeric(as.character(substr(rownames(HierClust), 1, 3))))
   list(HierClust)
 }
-
 ```
 
-
 #Run the hierachical clustering for the informed weights
-We draw a line in the tree at 0.1 an 0.05.
+We draw a line in the tree at 0.1 and 0.05.
 
 ```{r}
-  InputInformed <-lapply(GowerInformed, GetMatrix)
+InputInformed <-lapply(GowerInformed, GetMatrix)
 ClustersInformed <-lapply(InputInformed, hierClusterObject)
-lapply(ClustersInformed, plotDendogram,cutline1= 0.1,cutline2=0.05, "Informed")
+lapply(ClustersInformed, plotDendogram,cutline1= 0.1, cutline2=0.05, "Informed")
 
 cutofflist <-c(0, 0.05, 0.08, 0.1, 0.12)
-resultHierClusterInformed <- vector("list",length(cutofflist))
+resultHierClusterInformed <- vector("list", length(cutofflist))
 for (i in 1:length(cutofflist)){
  resultHierClusterInformed[i] <- list(lapply(ClustersInformed, HierCluster,cutofflist[i], "Informed"))
 }
 ```
 
 #Run the hierachical clustering for the Anova weights
-We draw a line in the tree at 0.1 an 0.05.
+We draw a line in the tree at 0.1 and 0.05.
 
 ```{r}
 InputAnova <-lapply(GowerAnova, GetMatrix)
 ClustersAnova <-lapply(InputAnova, hierClusterObject)
-lapply(ClustersAnova, plotDendogram,cutline1=0.1,cutline2=0.05, "Anova")
+lapply(ClustersAnova, plotDendogram,cutline1=0.1, cutline2=0.05, "Anova")
 
 cutofflist <-c(0, 0.05, 0.08, 0.1, 0.12)
 resultHierClusterAnova <- vector("list",length(cutofflist))
@@ -499,7 +485,7 @@ resultHierClusterInformedComplete <- lapply(ClusterInformedComplete, HierCluster
 
 #PAM clustering Anova Weights
 
-We use  "Partitioning (clustering) of the data into k clusters "around medoids""  It is a more robust version of K-means.
+We use  "Partitioning (clustering) of the data into k clusters "around medoids".
 Make plot of Silhouette Width Anova 2016
 
 ```{r}
@@ -521,41 +507,41 @@ Plotgower(GowerAnova[[3]])
 Based on this plot we choose 3 clusters for anova 2016
 
 ```{r}
-pam_fit <- 3 %>% map(pam,x=GowerAnova[[1]], diss = TRUE)
+pam_fit <- 3 %>% map(pam, x=GowerAnova[[1]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterAnova16 <- data.table(merge(polisDT %>% filter(jaar==2016), cl, by='polisnr', all=F))
 ```
 
 Based on this plot we choose 2 clusters for anova 2017
 
 ```{r}
-pam_fit <- 2 %>% map(pam,x=GowerAnova[[2]], diss = TRUE)
+pam_fit <- 2 %>% map(pam, x=GowerAnova[[2]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterAnova17 <- data.table(merge(polisDT %>% filter(jaar==2017), cl, by='polisnr', all=F))
 ```
 
 Based on this plot we choose 5 clusters for anova 2017
 
 ```{r}
-pam_fit <- 5 %>% map(pam,x=GowerAnova[[3]], diss = TRUE)
+pam_fit <- 5 %>% map(pam, x=GowerAnova[[3]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterAnova18 <- data.table(merge(polisDT %>% filter(jaar==2018), cl, by='polisnr', all=F))
 ```
 
 #PAM clustering Informed Weights
-We use  "Partitioning (clustering) of the data into k clusters "around medoids""  It is a more robust version of K-means.
+We use  "Partitioning (clustering) of the data into k clusters "around medoids".
 Make plot of Silhouette Width Informed 2016
 
 ```{r}
@@ -577,36 +563,36 @@ Plotgower(GowerInformed[[3]])
 Based on this plot we choose 3 clusters for Informed 2016
 
 ```{r}
-pam_fit <- 3 %>% map(pam,x=GowerInformed[[1]], diss = TRUE)
+pam_fit <- 3 %>% map(pam, x=GowerInformed[[1]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterInformed16 <- data.table(merge(polisDT %>% filter(jaar==2016), cl, by='polisnr', all=F))
 ```
 
 Based on this plot we choose 3 clusters for Informed 2017
 
 ```{r}
-pam_fit <- 3 %>% map(pam,x=GowerInformed[[2]], diss = TRUE)
+pam_fit <- 3 %>% map(pam, x=GowerInformed[[2]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterInformed17 <- data.table(merge(polisDT %>% filter(jaar==2017), cl, by='polisnr', all=F))
 ```
 
 Based on this plot we choose 4 clusters for Informed 2018
 
 ```{r}
-pam_fit <- 4 %>% map(pam,x=GowerInformed[[3]], diss = TRUE)
+pam_fit <- 4 %>% map(pam, x=GowerInformed[[3]], diss = TRUE)
 #Make anova PAM cluster data set pretty.
 cl <- data.frame(pam_fit[[1]]$clustering)
 cl$polisnr <- row.names(cl)
 names(cl)[1] <- 'cluster'
-cl$polisnr <- as.numeric(gsub("_.*","",gsub(".*#","",cl$polisnr)))
+cl$polisnr <- as.numeric(gsub("_.*", "", gsub(".*#", "", cl$polisnr)))
 dt_clusterInformed18 <- data.table(merge(polisDT %>% filter(jaar==2018), cl, by='polisnr', all=F))
 ```
 
@@ -662,12 +648,12 @@ For each cluster we plot for each healthplan its premium. In the plots below, ea
 plotDT <- Finaldata2016 %>% mutate(clusterHierachical2016Informed10=as.factor(clusterHierachical2016Informed10)) %>%
    mutate(clusterHierachical2016Informed10=as.factor(clusterHierachical2016Informed10))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed10)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed10)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2016Informed10) +
   xlab("cluster")
 
-ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff10.png"),p)
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff10.png"), p)
 plot(p)
 ```
 
@@ -677,12 +663,12 @@ plot(p)
 plotDT <- Finaldata2017 %>% mutate(clusterHierachical2017Informed10=as.factor(clusterHierachical2017Informed10)) %>%
    mutate(clusterHierachical2017Informed10=as.factor(clusterHierachical2017Informed10))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed10)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed10)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2017Informed10) +
   xlab("cluster")
 
-ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff10.png"),p)
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff10.png"), p)
 plot(p)
 ```
 
@@ -692,7 +678,7 @@ plot(p)
 plotDT <- Finaldata2018 %>% mutate(clusterHierachical2018Informed10=as.factor(clusterHierachical2018Informed10)) %>%
    mutate(clusterHierachical2018Informed10=as.factor(clusterHierachical2018Informed10))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed10)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed10)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2018Informed10) +
   xlab("cluster")
@@ -710,12 +696,12 @@ For each cluster we plot for each healthplan its premium. In the plots below, ea
 plotDT <- Finaldata2016 %>% mutate(clusterHierachical2016Informed5=as.factor(clusterHierachical2016Informed5)) %>%
    mutate(clusterHierachical2016Informed5=as.factor(clusterHierachical2016Informed5))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed5)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2016Informed5)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2016Informed5) +
   xlab("cluster")
 
-ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff5.png"),p)
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2016_cutoff5.png"), p)
 plot(p)
 ```
 
@@ -725,12 +711,12 @@ plot(p)
 plotDT <- Finaldata2017 %>% mutate(clusterHierachical2017Informed5=as.factor(clusterHierachical2017Informed5)) %>%
    mutate(clusterHierachical2017Informed5=as.factor(clusterHierachical2017Informed5))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed5)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2017Informed5)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2017Informed5) +
   xlab("cluster")
 
-ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff5.png"),p)
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2017_cutoff5.png"), p)
 plot(p)
 ```
 
@@ -740,12 +726,12 @@ plot(p)
 plotDT <- Finaldata2018 %>% mutate(clusterHierachical2018Informed5=as.factor(clusterHierachical2018Informed5)) %>%
    mutate(clusterHierachical2018Informed5=as.factor(clusterHierachical2018Informed5))
 
-p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed5)==F), aes(x="",y=premie)) + 
+p <- ggplot(plotDT %>%filter(is.na(clusterHierachical2018Informed5)==F), aes(x="", y=premie)) + 
   geom_point() + 
   facet_grid(.~clusterHierachical2018Informed5) +
   xlab("cluster")
   
-ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2018_cutoff5.png"),p)
+ggsave(filename=paste0("Output/clusterHierachicalInformed_Priceplot_2018_cutoff5.png"), p)
 
 plot(p)
 ```
@@ -824,8 +810,8 @@ set.seed(12343)
 clusters <- Finaldata2018 %>% filter(is.na(clusterPamAnova)==F)
 ```
 
-
 Compare different methods for informed and Anova weights
+
 ```{r message=FALSE, warning=FALSE}
 differentMethods <- 
   data.frame(
@@ -846,8 +832,8 @@ differentMethods <- differentMethods %>% mutate(AdjustedRandIndex=round(as.numer
 kable(differentMethods)
 ```
 
-
 Compare different weights per method.
+
 ```{r message=FALSE, warning=FALSE}
 differentWeights <- 
   data.frame(
@@ -865,15 +851,12 @@ differentWeights <- differentWeights %>% mutate(AdjustedRandIndex=round(as.numer
 kable(differentWeights)
 ```
 
-
 Write ARI's to files.
 
 ```{r message=FALSE, warning=FALSE}
 write.csv2(differentMethods, 'Output/differentMethodsARI.csv', row.names=F)
 write.csv2(differentWeights, 'Output/differentWeightsARI.csv', row.names=F)
 ```
-
-
 
 # Disclaimer en Licenties
 
