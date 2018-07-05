@@ -25,5 +25,5 @@
 *.rds
 *.RDS
 *.tiff
-*docx
-*doc
+*.docx
+*.doc
