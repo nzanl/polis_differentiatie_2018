@@ -27,7 +27,7 @@ Plotgower <- function(gower_dist, n=50){
   lines(1:n, sil_width)
   title("")
 
-return(p)
+  return(p)
 }
 
 
